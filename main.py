@@ -1,16 +1,13 @@
 import pyautogui, configparser, time, os
 import globalvar as gv
-# import faulthandler;faulthandler.enable()
 
 from sys import argv, exit
-from datetime import datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIntValidator
 from ui_AutoClicker import Ui_Dialog
 
 ini_path = os.path.dirname(argv[0])
-
 
 class MainPage(QtWidgets.QMainWindow):
     _startThread = pyqtSignal()
@@ -39,7 +36,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.callUi.pushButton_pause.clicked.connect(self.pb_pause_clicked)
         # 进度条
         self.callUi.progressBar_left.setValue(0)
-
+        # 线程
         self.myT = Runthread()
         self.thread = QThread(self)
         self.myT.moveToThread(self.thread)
@@ -108,7 +105,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.config_write()
         gv.set_value('flag_save', 1)
 
-    def pb_start_clicked(self, msg):
+    def pb_start_clicked(self):
         print('pb_start clicked')
         if gv.get_value('flag_done') == 1:  # 前一次完成则重新计数
             self.myT.flag = False
@@ -143,10 +140,8 @@ class MainPage(QtWidgets.QMainWindow):
         self.thread.wait()
         print('>>> stop_thread End')
 
-
 class Runthread(QtCore.QObject):  # 线程
     signal = pyqtSignal(list)
-
     def __init__(self):
         super(Runthread, self).__init__()
         self.flag = True
@@ -189,10 +184,8 @@ class Runthread(QtCore.QObject):  # 线程
                 self.signal.emit([0, '>>> 完成'])
                 gv.set_value('flag_done', 1)  # 标记点击已完成
                 break
-
         print('>>> run End')
         self.signal.emit([0, '>>> 进程终止'])
-
 
 # 程序入口
 if __name__ == '__main__':
