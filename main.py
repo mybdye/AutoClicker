@@ -1,9 +1,7 @@
-import pyautogui, configparser, time, os
+import pyautogui, configparser, time, os, subprocess
 import globalvar as gv
-# import faulthandler;faulthandler.enable()
 
 from sys import argv, exit
-from datetime import datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIntValidator
@@ -27,7 +25,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.callUi.lineEdit_counter.textChanged.connect(self.lineEdit_counter_changed)
         self.callUi.lineEdit_intervalTime.textChanged.connect(self.lineEdit_intervalTime_changed)
         self.callUi.lineEdit_waitFirstTime.textChanged.connect(self.lineEdit_waitFirstTime_changed)
-        # 限制输入 int
+        # 限制输入整数
         self.callUi.lineEdit_counter.setValidator(QIntValidator())
         self.callUi.lineEdit_intervalTime.setValidator(QIntValidator())
         self.callUi.lineEdit_waitFirstTime.setValidator(QIntValidator())
@@ -119,6 +117,11 @@ class MainPage(QtWidgets.QMainWindow):
 
         if len(self.callUi.lineEdit_counter.text()) and len(self.callUi.lineEdit_intervalTime.text()) and len(
                 self.callUi.lineEdit_waitFirstTime.text()) > 0:
+            totalSenconds = int(self.callUi.lineEdit_counter.text())*(int(self.callUi.lineEdit_intervalTime.text())/1000)+int(self.callUi.lineEdit_waitFirstTime.text())
+            m, s = divmod(totalSenconds, 60)
+            h, m = divmod(m, 60)
+            print('预计用时'"%02d:%02d:%02d" % (h, m, s))
+            self.callUi.lineEdit_expectedTime.setText("%02d:%02d:%02d" % (h, m, s))
             if self.thread.isRunning():
                 return
             self.myT.flag = True
@@ -171,12 +174,20 @@ class Runthread(QtCore.QObject):        # 线程
                 time.sleep(0.5)
                 current_mouse_position = pyautogui.position()
                 if last_mouse_position == current_mouse_position:
-                    time.sleep(intervalTime / 1000)         # 点击间隔
                     pyautogui.click(clicks=1, button='left')        # 点击模式，单击/左键
+                    time.sleep(intervalTime / 1000)  # 点击间隔
                     counter = counter - 1
                     gv.set_value('lineEdit_counter', counter)
                     print('剩余次数:'+ str(counter))
                     x, y = pyautogui.position()
+                    print('x,y 1:', x, y)
+                    # 坐标转换(Retina分辨率)
+                    if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
+                        x = x / 2
+                        y = y / 2
+                    print('x,y 2:', x, y)
+                    red, green, blue = pyautogui.pixel(x, y)
+                    print('getpixel:', red, green, blue)
                     self.signal.emit([counter, '点击 x:' + str(x) + ' y:' + str(y) + '\n剩余次数:'+ str(counter)])
                 else:
                     print('鼠标移动中!\n剩余次数:'+ str(counter))
