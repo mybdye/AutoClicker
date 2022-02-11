@@ -1,7 +1,7 @@
 # AutoClicker For Mac
 <img src="http://mjjzp.cf/img/2022/02/11/2565d697fd60d.png" width="220" />
 
-##2022
+# 2022
 - 0211 
   - fix 间隔时间放到点击之后
   - fix Retina 分辨率实际坐标问题
