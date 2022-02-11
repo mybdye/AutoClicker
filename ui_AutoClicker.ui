@@ -7,20 +7,8 @@
     <x>0</x>
     <y>0</y>
     <width>190</width>
-    <height>220</height>
+    <height>250</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>190</width>
-    <height>220</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>190</width>
-    <height>220</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>AutoClicker</string>
@@ -31,7 +19,7 @@
      <x>10</x>
      <y>0</y>
      <width>171</width>
-     <height>141</height>
+     <height>171</height>
     </rect>
    </property>
    <property name="title">
@@ -40,9 +28,9 @@
    <widget class="QLineEdit" name="lineEdit_counter">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>90</x>
       <y>30</y>
-      <width>100</width>
+      <width>70</width>
       <height>20</height>
      </rect>
     </property>
@@ -51,6 +39,9 @@
     </property>
     <property name="layoutDirection">
      <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -94,6 +85,9 @@
     <property name="layoutDirection">
      <enum>Qt::RightToLeft</enum>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
@@ -111,9 +105,9 @@
    <widget class="QLineEdit" name="lineEdit_waitFirstTime">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>90</x>
       <y>90</y>
-      <width>40</width>
+      <width>70</width>
       <height>20</height>
      </rect>
     </property>
@@ -123,18 +117,24 @@
     <property name="layoutDirection">
      <enum>Qt::RightToLeft</enum>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
    </widget>
    <widget class="QProgressBar" name="progressBar_left">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>90</x>
       <y>46</y>
-      <width>100</width>
+      <width>70</width>
       <height>10</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="value">
-     <number>24</number>
+     <number>20</number>
     </property>
     <property name="textVisible">
      <bool>false</bool>
@@ -144,7 +144,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>110</y>
+      <y>140</y>
       <width>80</width>
       <height>30</height>
      </rect>
@@ -153,12 +153,50 @@
      <string>保存配置</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="lineEdit_expectedTime">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>120</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>预计用时</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QPushButton" name="pushButton_pause">
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>110</y>
+     <y>140</y>
      <width>50</width>
      <height>30</height>
     </rect>
@@ -171,7 +209,7 @@
    <property name="geometry">
     <rect>
      <x>85</x>
-     <y>110</y>
+     <y>140</y>
      <width>50</width>
      <height>30</height>
     </rect>
@@ -184,7 +222,7 @@
    <property name="geometry">
     <rect>
      <x>9</x>
-     <y>150</y>
+     <y>180</y>
      <width>171</width>
      <height>61</height>
     </rect>
