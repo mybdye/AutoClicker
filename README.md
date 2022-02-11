@@ -1,9 +1,13 @@
 # AutoClicker For Mac
-<img src="http://mjjzp.cf/img/2022/02/10/c84737d0bec04.png" width="220" />
+<img src="http://mjjzp.cf/img/2022/02/11/2565d697fd60d.png" width="220" />
 
 ##2022
+- 0211 
+  - fix 间隔时间放到点击之后
+  - add 预计用时显示
+  - todo 坐标颜色对比
 - 0210
-  - fix ui/
+  - fix ui
 - 0209
   - fix 配置
 - 0208 
