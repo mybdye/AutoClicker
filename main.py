@@ -180,12 +180,10 @@ class Runthread(QtCore.QObject):        # 线程
                     gv.set_value('lineEdit_counter', counter)
                     print('剩余次数:'+ str(counter))
                     x, y = pyautogui.position()
-                    print('x,y 1:', x, y)
                     # 坐标转换(Retina分辨率)
                     if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
                         x = x / 2
                         y = y / 2
-                    print('x,y 2:', x, y)
                     red, green, blue = pyautogui.pixel(x, y)
                     print('getpixel:', red, green, blue)
                     self.signal.emit([counter, '点击 x:' + str(x) + ' y:' + str(y) + '\n剩余次数:'+ str(counter)])
