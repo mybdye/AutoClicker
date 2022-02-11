@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>200</width>
+    <width>190</width>
     <height>220</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>200</width>
+    <width>190</width>
     <height>220</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>200</width>
+    <width>190</width>
     <height>220</height>
    </size>
   </property>
@@ -28,10 +28,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>9</x>
+     <x>10</x>
      <y>0</y>
-     <width>180</width>
-     <height>120</height>
+     <width>171</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="title">
@@ -40,9 +40,9 @@
    <widget class="QLineEdit" name="lineEdit_counter">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>60</x>
       <y>30</y>
-      <width>70</width>
+      <width>100</width>
       <height>20</height>
      </rect>
     </property>
@@ -58,12 +58,12 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>81</width>
+      <width>51</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>点击次数</string>
+     <string>总次数</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -71,18 +71,18 @@
      <rect>
       <x>10</x>
       <y>60</y>
-      <width>81</width>
+      <width>61</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>每次间隔(ms)</string>
+     <string>间隔(ms)</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_intervalTime">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>90</x>
       <y>60</y>
       <width>70</width>
       <height>20</height>
@@ -111,9 +111,9 @@
    <widget class="QLineEdit" name="lineEdit_waitFirstTime">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>120</x>
       <y>90</y>
-      <width>70</width>
+      <width>40</width>
       <height>20</height>
      </rect>
     </property>
@@ -127,9 +127,9 @@
    <widget class="QProgressBar" name="progressBar_left">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>60</x>
       <y>46</y>
-      <width>70</width>
+      <width>100</width>
       <height>10</height>
      </rect>
     </property>
@@ -140,12 +140,25 @@
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_save">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>80</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保存配置</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QPushButton" name="pushButton_pause">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>190</y>
+     <x>130</x>
+     <y>110</y>
      <width>50</width>
      <height>30</height>
     </rect>
@@ -157,8 +170,8 @@
   <widget class="QPushButton" name="pushButton_start">
    <property name="geometry">
     <rect>
-     <x>75</x>
-     <y>190</y>
+     <x>85</x>
+     <y>110</y>
      <width>50</width>
      <height>30</height>
     </rect>
@@ -167,26 +180,13 @@
     <string>开始</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_save">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>50</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>保存</string>
-   </property>
-  </widget>
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
      <x>9</x>
-     <y>130</y>
-     <width>181</width>
-     <height>60</height>
+     <y>150</y>
+     <width>171</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="acceptDrops">
