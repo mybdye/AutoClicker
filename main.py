@@ -174,18 +174,21 @@ class Runthread(QtCore.QObject):        # 线程
                 time.sleep(0.5)
                 current_mouse_position = pyautogui.position()
                 if last_mouse_position == current_mouse_position:
-                    pyautogui.click(clicks=1, button='left')        # 点击模式，单击/左键
+                    pyautogui.click(clicks=1, button='left')  # 点击模式，单击/左键
+                    print('size:', pyautogui.size())
                     time.sleep(intervalTime / 1000)  # 点击间隔
                     counter = counter - 1
                     gv.set_value('lineEdit_counter', counter)
                     print('剩余次数:'+ str(counter))
                     x, y = pyautogui.position()
+                    print('x,y 1:', x, y)
                     # 坐标转换(Retina分辨率)
-                    if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
-                        x = x / 2
-                        y = y / 2
-                    red, green, blue = pyautogui.pixel(x, y)
-                    print('getpixel:', red, green, blue)
+                    # if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
+                    #    x = x / 2
+                    #    y = y / 2
+                    # print('x,y 2:', x, y)
+                    # red, green, blue = pyautogui.pixel(x1, y1)
+                    # print('getpixel:', red, green, blue)
                     self.signal.emit([counter, '点击 x:' + str(x) + ' y:' + str(y) + '\n剩余次数:'+ str(counter)])
                 else:
                     print('鼠标移动中!\n剩余次数:'+ str(counter))
