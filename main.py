@@ -1,23 +1,29 @@
-import pyautogui, configparser, time, os, subprocess
-import globalvar as gv
-
 from sys import argv, exit
+
+import configparser
+import os
+import pyautogui
+import time
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIntValidator
+
+import globalvar as gv
 from ui_AutoClicker import Ui_Dialog
 
 ini_path = os.path.dirname(argv[0])
 
+
 class MainPage(QtWidgets.QMainWindow):
     _startThread = pyqtSignal()
+
     def __init__(self):
         super(MainPage, self).__init__()
         self.callUi = Ui_Dialog()
         self.callUi.setupUi(self)
         gv._init()
         # print('ini_path:', ini_path)
-        self.config_read()      # 读取配置
+        self.config_read()  # 读取配置
 
         # 日志输出
         self.callUi.textBrowser.textChanged.connect(self.tb_changed)
@@ -45,7 +51,7 @@ class MainPage(QtWidgets.QMainWindow):
     def call_backlog(self, msg):
         counter = int(self.callUi.lineEdit_counter.text())
         self.callUi.textBrowser.append(str(msg[1:][0]))
-        self.callUi.progressBar_left.setValue((msg[0]/counter)*100)
+        self.callUi.progressBar_left.setValue((msg[0] / counter) * 100)
 
     # textbrowser 日志输出框
     def tb_changed(self):  # 日志输出框自动滚到底部（滚动条100%）
@@ -65,9 +71,18 @@ class MainPage(QtWidgets.QMainWindow):
             gv.set_value('lineEdit_intervalTime', int(config.get('DEFAULT', 'lineEdit_intervalTime')))
             gv.set_value('lineEdit_waitFirstTime', int(config.get('DEFAULT', 'lineEdit_waitFirstTime')))
             self.callUi.textBrowser.append('>>> 已读取配置!')
-        except :
+            if int(self.callUi.lineEdit_counter.text()) > 0 and int(
+                    self.callUi.lineEdit_intervalTime.text()) >= 0 and int(
+                    self.callUi.lineEdit_waitFirstTime.text()) >= 0:
+                totalSenconds = int(self.callUi.lineEdit_counter.text()) * (
+                        int(self.callUi.lineEdit_intervalTime.text()) / 1000 + 0.5) + int(
+                    self.callUi.lineEdit_waitFirstTime.text())
+                m, s = divmod(totalSenconds, 60)
+                h, m = divmod(m, 60)
+                print('预计用时'"%02d:%02d:%02d" % (h, m, s))
+                self.callUi.lineEdit_expectedTime.setText("%02d:%02d:%02d" % (h, m, s))
+        except:
             self.callUi.textBrowser.append('>>> 未找到配置,请输入!')
-
 
     def config_write(self):
         config = configparser.ConfigParser()
@@ -79,45 +94,58 @@ class MainPage(QtWidgets.QMainWindow):
         self.callUi.textBrowser.append('>>> 配置已保存!')
         self.config_read()
 
-
-
     def lineEdit_counter_changed(self):
         print('lineEdit_counter changed')
         le_counter = self.callUi.lineEdit_counter.text()
         if len(le_counter) > 0:
             gv.set_value('lineEdit_counter', int(le_counter))
-            #self.callUi.textBrowser.append('次数：' + str(le_counter))
+            # self.callUi.textBrowser.append('次数：' + str(le_counter))
 
     def lineEdit_intervalTime_changed(self):
         print('lineEdit_intervalTime changed')
         le_intervalTime = self.callUi.lineEdit_intervalTime.text()
         if len(le_intervalTime) > 0:
             gv.set_value('lineEdit_intervalTime', int(le_intervalTime))
-            #self.callUi.textBrowser.append('间隔：' + str(le_intervalTime))
+            # self.callUi.textBrowser.append('间隔：' + str(le_intervalTime))
 
     def lineEdit_waitFirstTime_changed(self):
         print('lineEdit_waitFirstTime changed')
         le_waitFirstTime = self.callUi.lineEdit_waitFirstTime.text()
         if len(le_waitFirstTime) > 0:
             gv.set_value('lineEdit_waitFirstTime', int(le_waitFirstTime))
-            #self.callUi.textBrowser.append('等待：' + str(le_waitFirstTime))
+            # self.callUi.textBrowser.append('等待：' + str(le_waitFirstTime))
 
     def pb_save_clicked(self):
         print('pb_save clicked')
-        self.config_write()
-        gv.set_value('flag_save', 1)
+        if int(self.callUi.lineEdit_counter.text()) > 0 and int(self.callUi.lineEdit_intervalTime.text()) >= 0 and int(
+                self.callUi.lineEdit_waitFirstTime.text()) >= 0:
+            totalSenconds = int(self.callUi.lineEdit_counter.text()) * (
+                        int(self.callUi.lineEdit_intervalTime.text()) / 1000+0.5) + int(
+                self.callUi.lineEdit_waitFirstTime.text())
+            m, s = divmod(totalSenconds, 60)
+            h, m = divmod(m, 60)
+            print('预计用时'"%02d:%02d:%02d" % (h, m, s))
+            self.callUi.lineEdit_expectedTime.setText("%02d:%02d:%02d" % (h, m, s))
+            # 写入配置
+            self.config_write()
+            gv.set_value('flag_save', 1)
+        else:
+            self.callUi.lineEdit_expectedTime.setText('/NA')
+            self.callUi.textBrowser.append('>>> 检查配置!')
 
     def pb_start_clicked(self, msg):
         print('pb_start clicked')
-        if gv.get_value('flag_done') == 1:      # 前一次完成则重新计数
+        if gv.get_value('flag_done') == 1:  # 前一次完成则重新计数
             self.myT.flag = False
             self.stop_thread()
             gv.set_value('lineEdit_counter', int(self.callUi.lineEdit_counter.text()))
             gv.set_value('flag_done', 0)
 
-        if len(self.callUi.lineEdit_counter.text()) and len(self.callUi.lineEdit_intervalTime.text()) and len(
-                self.callUi.lineEdit_waitFirstTime.text()) > 0:
-            totalSenconds = int(self.callUi.lineEdit_counter.text())*(int(self.callUi.lineEdit_intervalTime.text())/1000)+int(self.callUi.lineEdit_waitFirstTime.text())
+        if int(self.callUi.lineEdit_counter.text()) > 0 and int(self.callUi.lineEdit_intervalTime.text()) >= 0 and int(
+                self.callUi.lineEdit_waitFirstTime.text()) >= 0:
+            totalSenconds = int(self.callUi.lineEdit_counter.text()) * (
+                    int(self.callUi.lineEdit_intervalTime.text()) / 1000 + 0.5) + int(
+                self.callUi.lineEdit_waitFirstTime.text())
             m, s = divmod(totalSenconds, 60)
             h, m = divmod(m, 60)
             print('预计用时'"%02d:%02d:%02d" % (h, m, s))
@@ -147,57 +175,65 @@ class MainPage(QtWidgets.QMainWindow):
         self.thread.wait()
         print('>>> stop_thread End')
 
-class Runthread(QtCore.QObject):        # 线程
+
+class Runthread(QtCore.QObject):  # 线程
     signal = pyqtSignal(list)
+
     def __init__(self):
         super(Runthread, self).__init__()
         self.flag = True
+
     def __del__(self):
         print('>>>__del__')
+
     def run(self):
         counter = gv.get_value('lineEdit_counter')
         intervalTime = gv.get_value('lineEdit_intervalTime')
         waitFirstTime = gv.get_value('lineEdit_waitFirstTime')
         print('>>> run Start')
         self.signal.emit([counter, '>>> 开始'])
-        if gv.get_value('flag_save') == 1:      # 保存后取最新的counter
+        if gv.get_value('flag_save') == 1:  # 保存后取最新的counter
             counter = gv.get_value('lineEdit_counter')
             gv.set_value('flag_save', 0)
-        for i in range(0, waitFirstTime):       # 首次等待
+        for i in range(0, waitFirstTime):  # 首次等待
             print('倒计时(s):', waitFirstTime - i)
             self.signal.emit([counter, '倒计时(s):' + str(waitFirstTime - i)])
             time.sleep(1)
-            
+
         while self.flag:
             if counter > 0:
-                last_mouse_position = pyautogui.position()      # 对比鼠标当前坐标
+                last_mouse_position = pyautogui.position()  # 对比鼠标当前坐标
                 time.sleep(0.5)
                 current_mouse_position = pyautogui.position()
                 if last_mouse_position == current_mouse_position:
-                    pyautogui.click(clicks=1, button='left')        # 点击模式，单击/左键
+                    pyautogui.click(clicks=1, button='left')  # 点击模式，单击/左键
+                    # print('size:', pyautogui.size())
                     time.sleep(intervalTime / 1000)  # 点击间隔
                     counter = counter - 1
                     gv.set_value('lineEdit_counter', counter)
-                    print('剩余次数:'+ str(counter))
+                    print('剩余次数:' + str(counter))
                     x, y = pyautogui.position()
+                    print('x,y 1:', x, y)
                     # 坐标转换(Retina分辨率)
-                    if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
-                        x = x / 2
-                        y = y / 2
-                    red, green, blue = pyautogui.pixel(x, y)
-                    print('getpixel:', red, green, blue)
-                    self.signal.emit([counter, '点击 x:' + str(x) + ' y:' + str(y) + '\n剩余次数:'+ str(counter)])
+                    # if subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0:
+                    #    x = x / 2
+                    #    y = y / 2
+                    # print('x,y 2:', x, y)
+                    # red, green, blue = pyautogui.pixel(x1, y1)
+                    # print('getpixel:', red, green, blue)
+                    self.signal.emit([counter, '点击 x:' + str(x) + ' y:' + str(y) + '\n剩余次数:' + str(counter)])
                 else:
-                    print('鼠标移动中!\n剩余次数:'+ str(counter))
-                    self.signal.emit([counter, '鼠标移动中!\n剩余次数：'+ str(counter)])
+                    print('鼠标移动中!\n剩余次数:' + str(counter))
+                    self.signal.emit([counter, '鼠标移动中!\n剩余次数：' + str(counter)])
                 continue
             else:
                 self.signal.emit([0, '>>> 完成'])
-                gv.set_value('flag_done', 1)        # 标记点击已完成
+                gv.set_value('flag_done', 1)  # 标记点击已完成
                 break
 
         print('>>> run End')
         self.signal.emit([0, '>>> 进程终止'])
+
 
 # 程序入口
 if __name__ == '__main__':
